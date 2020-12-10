@@ -22,8 +22,9 @@ import "cartographer/sensor/proto/adaptive_voxel_filter_options.proto";
 import "cartographer/mapping/proto/scan_matching/ceres_scan_matcher_options_2d.proto";
 import "cartographer/mapping/proto/scan_matching/real_time_correlative_scan_matcher_options.proto";
 import "cartographer/mapping/proto/submaps_options_2d.proto";
+import "cartographer/mapping/proto/scan_matching/ndt_scan_matcher_options_2d.proto";
 
-// NEXT ID: 22
+// NEXT ID: 24
 message LocalTrajectoryBuilderOptions2D {
   // Rangefinder points outside these ranges will be dropped.
   float min_range = 14;
@@ -55,6 +56,9 @@ message LocalTrajectoryBuilderOptions2D {
   bool use_online_correlative_scan_matching = 5;
   cartographer.mapping.scan_matching.proto.RealTimeCorrelativeScanMatcherOptions
       real_time_correlative_scan_matcher_options = 7;
+  bool use_ndt_scan_matching = 22;
+  cartographer.mapping.scan_matching.proto.NDTScanMatcherOptions2D
+      ndt_scan_matcher_options = 23;
   cartographer.mapping.scan_matching.proto.CeresScanMatcherOptions2D
       ceres_scan_matcher_options = 8;
   MotionFilterOptions motion_filter_options = 13;

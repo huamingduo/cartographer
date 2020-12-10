@@ -44,6 +44,7 @@ LocalTrajectoryBuilder2D::LocalTrajectoryBuilder2D(
       real_time_correlative_scan_matcher_(
           options_.real_time_correlative_scan_matcher_options()),
       ceres_scan_matcher_(options_.ceres_scan_matcher_options()),
+      ndt_scan_matcher_(options_.ndt_scan_matcher_options()),
       range_data_collator_(expected_range_sensor_ids) {}
 
 LocalTrajectoryBuilder2D::~LocalTrajectoryBuilder2D() {}
@@ -83,10 +84,18 @@ std::unique_ptr<transform::Rigid2d> LocalTrajectoryBuilder2D::ScanMatch(
 
   auto pose_observation = absl::make_unique<transform::Rigid2d>();
   ceres::Solver::Summary summary;
-  ceres_scan_matcher_.Match(pose_prediction.translation(), initial_ceres_pose,
+  if (options_.use_ndt_scan_matching()) {
+    ndt_scan_matcher_.Match(pose_prediction.translation(), initial_ceres_pose,
                             filtered_gravity_aligned_point_cloud,
                             *matching_submap->grid(), pose_observation.get(),
                             &summary);
+  } else {
+    ceres_scan_matcher_.Match(pose_prediction.translation(), initial_ceres_pose,
+                              filtered_gravity_aligned_point_cloud,
+                              *matching_submap->grid(), pose_observation.get(),
+                              &summary);
+  }
+
   if (pose_observation) {
     kCeresScanMatcherCostMetric->Observe(summary.final_cost);
     const double residual_distance =

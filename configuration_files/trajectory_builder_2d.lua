@@ -42,6 +42,10 @@ TRAJECTORY_BUILDER_2D = {
     rotation_delta_cost_weight = 1e-1,
   },
 
+  use_ndt_scan_matcher = false,
+  ndt_scan_matcher = {
+    
+  }
   ceres_scan_matcher = {
     occupied_space_weight = 1.,
     translation_weight = 10.,
