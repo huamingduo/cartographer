@@ -18,6 +18,7 @@
 
 #include "cartographer/mapping/2d/submap_2d.h"
 #include "cartographer/mapping/internal/2d/scan_matching/ceres_scan_matcher_2d.h"
+#include "cartographer/mapping/internal/2d/scan_matching/ndt_scan_matcher_2d.h"
 #include "cartographer/mapping/internal/motion_filter.h"
 #include "cartographer/mapping/internal/scan_matching/real_time_correlative_scan_matcher.h"
 #include "cartographer/mapping/pose_extrapolator_interface.h"
@@ -54,6 +55,11 @@ proto::LocalTrajectoryBuilderOptions2D CreateLocalTrajectoryBuilderOptions2D(
           parameter_dictionary
               ->GetDictionary("real_time_correlative_scan_matcher")
               .get());
+  options.set_use_ndt_scan_matching(
+      parameter_dictionary->GetBool("use_ndt_scan_matching"));
+  *options.mutable_ndt_scan_matcher_options() = 
+      mapping::scan_matching::CreateNDTScanMatcherOptions2D(
+          parameter_dictionary->GetDictionary("ndt_scan_matcher").get());
   *options.mutable_ceres_scan_matcher_options() =
       mapping::scan_matching::CreateCeresScanMatcherOptions2D(
           parameter_dictionary->GetDictionary("ceres_scan_matcher").get());
