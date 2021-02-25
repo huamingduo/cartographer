@@ -17,6 +17,6 @@
 #ifndef CARTOGRAPHER_COMMON_LUA_H_
 #define CARTOGRAPHER_COMMON_LUA_H_
 
-#include <lua.hpp>
+#include <lua5.2/lua.hpp>
 
 #endif  // CARTOGRAPHER_COMMON_LUA_H_
